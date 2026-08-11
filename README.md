@@ -14,6 +14,8 @@
 [![Source available](https://img.shields.io/badge/license-source--available-EC4899?style=for-the-badge)](LICENSE)
 [![Support Alina](https://img.shields.io/badge/💜%20Support-Alina-A855F7?style=for-the-badge)](https://web.tribute.tg/d/OAM)
 
+**English** · [**Русский**](README_RU.md)
+
 [**Quick start**](#start-playing) · [**Capabilities**](#what-alina-can-do-today) · [**Architecture**](#architecture) · [**Verified tests**](#verified-release-gate) · [**Roadmap**](#what-comes-next) · [**Support**](#support-alina)
 
 </div>
