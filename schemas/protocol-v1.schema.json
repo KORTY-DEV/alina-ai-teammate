@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.alina.invalid/schemas/protocol-v1.schema.json",
+  "title": "Alina Factorio bridge protocol v1",
+  "$defs": {
+    "gameEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "event_id", "tick", "event", "payload"],
+      "properties": {
+        "version": { "const": 1 },
+        "event_id": { "type": "integer", "minimum": 1 },
+        "tick": { "type": "integer", "minimum": 0 },
+        "event": { "type": "string", "minLength": 1 },
+        "payload": { "type": "object" }
+      }
+    },
+    "mineResourceArgs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resource", "amount"],
+      "properties": {
+        "resource": { "type": "string", "minLength": 1 },
+        "amount": { "type": "integer", "minimum": 1, "maximum": 100 }
+      }
+    },
+    "resolveShortageArgs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["item"],
+      "properties": {
+        "item": { "type": "string", "minLength": 1 }
+      }
+    },
+    "repairPowerArgs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entity"],
+      "properties": {
+        "entity": { "type": "string", "minLength": 1 }
+      }
+    },
+    "continueFactoryArgs": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "request_id", "intent", "reply", "requires_confirmation", "actions"],
+      "properties": {
+        "version": { "const": 1 },
+        "request_id": { "type": "string", "minLength": 1 },
+        "intent": { "enum": ["mine_resource", "resolve_shortage", "repair_power", "continue_factory", "respond_only"] },
+        "reply": { "type": "string", "maxLength": 240 },
+        "requires_confirmation": { "type": "boolean" },
+        "actions": {
+          "type": "array",
+          "maxItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "type", "args"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "type": { "enum": ["mine_resource", "resolve_shortage", "repair_power", "continue_factory"] },
+              "args": {
+                "oneOf": [
+                  { "$ref": "#/$defs/mineResourceArgs" },
+                  { "$ref": "#/$defs/resolveShortageArgs" },
+                  { "$ref": "#/$defs/repairPowerArgs" },
+                  { "$ref": "#/$defs/continueFactoryArgs" }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "udpPlanPacket": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "kind", "plan"],
+      "properties": {
+        "version": { "const": 1 },
+        "kind": { "const": "plan" },
+        "plan": { "$ref": "#/$defs/plan" }
+      }
+    },
+    "udpHeartbeatPacket": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "kind", "status"],
+      "properties": {
+        "version": { "const": 1 },
+        "kind": { "const": "heartbeat" },
+        "status": { "const": "connected" }
+      }
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/$defs/gameEvent" },
+    { "$ref": "#/$defs/plan" },
+    { "$ref": "#/$defs/udpPlanPacket" },
+    { "$ref": "#/$defs/udpHeartbeatPacket" }
+  ]
+}

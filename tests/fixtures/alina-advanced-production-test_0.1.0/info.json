@@ -1,0 +1,11 @@
+{
+  "name": "alina-advanced-production-test",
+  "version": "0.1.0",
+  "title": "Alina Advanced Production Test",
+  "author": "Korty",
+  "factorio_version": "2.1",
+  "dependencies": [
+    "base >= 2.1.0",
+    "alina-ai-teammate >= 0.1.0"
+  ]
+}

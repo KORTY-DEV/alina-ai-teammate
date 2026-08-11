@@ -1,0 +1,13 @@
+﻿diagnostics/
+.alina-runtime/
+bridge/appsettings.local.json
+.test-output/
+**/bin/
+**/obj/
+**/TestResults/
+.vs/
+*.user
+*.suo
+
+# Public repository exclusions
+dist/

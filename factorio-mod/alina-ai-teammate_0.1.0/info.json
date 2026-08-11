@@ -1,0 +1,12 @@
+{
+  "name": "alina-ai-teammate",
+  "version": "0.1.0",
+  "title": "Alina AI Teammate",
+  "author": "Korty",
+  "description": "Автономный AI-тиммейт: отдельный персонаж анализирует существующую mod-aware фабрику, добывает, строит связанные производственные блоки, управляет исследованиями и уступает намерению игрока.",
+  "factorio_version": "2.1",
+  "dependencies": [
+    "base >= 2.1.0",
+    "? space-age >= 2.1.0"
+  ]
+}

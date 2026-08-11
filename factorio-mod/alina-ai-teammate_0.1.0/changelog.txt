@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 11. 08. 2026
+  Major Features:
+    - Added Alina as a visible second character that incrementally understands and develops an existing factory.
+    - Added deterministic mining, acquisition, crafting, connected item and fluid production blocks, power repair, research control and map-marker goals.
+    - Added player-intent protection, transactional construction, verified in-place upgrades and automatic rollback.
+  Features:
+    - Added planned inventory, armour, weapons, compatible equipment fuel and an owned Spidertron as late-base transport.
+    - Added mod-aware recipe, technology, entity, fluidbox, module, fuel and quality selection from live Factorio prototypes.
+    - Added Russian chat, configurable teammate names and aliases, compact UI modes, rare praise and cached factory advice.
+    - Added safe rail crossing without enabling deferred train control.
+    - Added multi-window production headroom analysis that distinguishes upstream shortages, insufficient capacity and blocked output logistics.
+    - Added item and fluid flow diagnosis so starved final machines are not duplicated instead of fixing their limiting input.
+  Optimizations:
+    - Added event-driven World Model indexing and bounded scans instead of per-tick factory scans.
+    - Bounded recursive acquisition ranking for equipment, modules and power poles on large modded factories.
+    - Made idle autonomy honor the configured interval while retaining fast continuation for active development goals.
+    - Batched physical-construction telemetry and preserved compact lane-sweep build order to remove per-entity disk stalls and saw-tooth walking.
+    - Routed power from the nearest network frontier and used most of each runtime pole prototype's wire reach.
+  Bugfixes:
+    - Prevented path oscillation, unsafe adverse-belt walking, stale construction transactions and repeated unreachable power tasks.
+    - Prevented long pumped pipelines from remaining solid surface walls and kept incompatible fluid ports and output tanks isolated.
+    - Prevented autonomous use of quality items and replacement of quality machines.
+    - Kept multiplayer state changes deterministic and excluded private singleplayer UDP input from multiplayer execution.
+  Compatibility:
+    - Tested with Factorio 2.1.12, Space Age and a copied K2SO/Cerys/Moshine save.
