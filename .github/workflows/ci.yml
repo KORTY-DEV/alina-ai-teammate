@@ -22,6 +22,12 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      - name: Validate PowerShell launcher syntax
+        shell: pwsh
+        run: |
+          [scriptblock]::Create((Get-Content -Raw 'scripts/Start-AlinaPlayable.ps1')) | Out-Null
+          [scriptblock]::Create((Get-Content -Raw 'scripts/Package-Mod.ps1')) | Out-Null
+
       - name: Build bridge
         run: dotnet build bridge/Alina.Bridge/Alina.Bridge.csproj --configuration Release
 
