@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  bridge:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build bridge
+        run: dotnet build bridge/Alina.Bridge/Alina.Bridge.csproj --configuration Release
+
+      - name: Build contract tests
+        run: dotnet build bridge/Alina.Bridge.Tests/Alina.Bridge.Tests.csproj --configuration Release
+
+      - name: Run contract tests
+        run: dotnet run --project bridge/Alina.Bridge.Tests/Alina.Bridge.Tests.csproj --configuration Release --no-build
