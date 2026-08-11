@@ -32,20 +32,22 @@ Alina AI Teammate
 - пользоваться доступной экипировкой, топливом, строительными роботами и собственным Spidertron;
 - безопасно пересекать рельсы, не управляя поездами.
 
-Архитектура рассчитана на низкую нагрузку: никакого полного сканирования базы или вызова модели каждый тик. Низкоуровневые действия выполняются детерминированным Lua-кодом. Опциональный локальный bridge с Ollama/qwen3.5:4b используется только для разрешённых высокоуровневых запросов и распространяется отдельно через репозиторий проекта.
+Архитектура рассчитана на низкую нагрузку: никакого полного сканирования базы на каждом тике и никакого внешнего управления каждым игровым действием. Обычная игровая автономия выполняется детерминированным Lua-кодом.
 
 Поезда, планеты и крупная военная стратегия не входят в 0.1.0. Перед первой игрой рекомендуется сделать отдельную копию важного сохранения.
 
 ## Privacy and multiplayer
 
 - Мод не отправляет телеметрию и не содержит сетевых адресов сторонних сервисов.
-- Обычная singleplayer-игра использует только один процесс Factorio; localhost UDP нужен лишь опциональному локальному bridge.
-- В multiplayer приватный UDP не изменяет состояние карты: все игровые изменения проходят синхронный deterministic-код Factorio.
-- Сейвы, токены, RCON-пароли и файлы моделей не входят в release-архив.
+- В multiplayer все игровые изменения проходят синхронный deterministic-код Factorio.
+- Сейвы, токены, RCON-пароли, локальные конфиги и служебные файлы не входят в release-архив.
 
-## Upload checklist
+## Release checklist
 
 - Upload `dist/alina-ai-teammate_0.1.0.zip`.
-- Select a license only after the repository owner makes the legal choice and adds the matching `LICENSE` file.
-- Add the GitHub source URL after the repository is published.
+- Version: `0.1.0`.
+- Positioning: `Playable MVP / early access`.
+- License: repository `LICENSE` (All rights reserved / source available for inspection).
+- Source repository: `KORTY-DEV/alina-ai-teammate`.
+- Known limitations: no train-network control, interplanetary progression or large-scale combat strategy.
 - Use the repository issue tracker for bug reports and attach a save only after removing private data.
