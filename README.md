@@ -1,45 +1,111 @@
 # Alina AI Teammate for Factorio
 
-Автономный локальный AI-тиммейт для Factorio 2.1 + Space Age. Автор: Korty.
+**Playable MVP / early-access release for Factorio 2.1 + Space Age.**
 
-Текущая версия — playable MVP candidate: Алина подключается к копии существующего сохранения, появляется вторым персонажем, читает реальную mod-aware фабрику без скриншотов и параллельно выполняет полезные задачи. Это ещё не публичная v1.0 и не обещание полного прохождения любой mod-сборки.
+Alina is an autonomous local teammate for existing Factorio factories. She appears as a separate visible character, reads the real factory through the Factorio Lua API, chooses bounded useful tasks, gathers materials, builds production, verifies the result and yields to player intent.
 
-## Безопасный запуск
+This is the first public playable version — not a promise of full autonomous completion of every modpack.
 
-1. Полностью закройте Factorio.
-2. Запустите `START_ALINA_PLAYABLE.cmd`.
-3. Launcher установит только `alina-ai-teammate`, соберёт bridge и запустит один обычный Factorio singleplayer.
-4. Рабочая карта — отдельная `Alina-Playable.zip`; исходный сейв не должен запускаться тестовыми скриптами.
+## What works now
 
-Для повторного создания playable-копии используйте `RESET_ALINA_PLAYABLE_FROM_LATEST_SAVE.cmd` только при закрытой игре. Перед заменой текущей копии launcher создаёт backup.
+- separate physical character with persistent state;
+- existing-save-first workflow using a safe copy of the save;
+- mod-aware World Model built from live prototypes, recipes, technologies and known factory state;
+- physical mining, crafting and material acquisition from existing storage/machines;
+- connected item-production blocks with drills, furnaces/assemblers, belts, inserters, power and buffers;
+- multi-fluid production blocks using real fluidbox topology, tanks and powered pumps;
+- bottleneck detection for upstream shortages, power limits and blocked outputs;
+- player-priority zones, explicit protected areas and ownership-aware conflict handling;
+- research priority, pause and return-to-autonomy commands;
+- construction transactions, result verification and rollback when a task makes things worse;
+- equipment/fuel handling, construction robots and Alina's own Spidertron;
+- safe rail crossing without train-network control;
+- deterministic ordinary gameplay without per-tick full-factory scans.
 
-## Архитектура
+## Verified release gate
 
-`Factorio singleplayer ↔ localhost UDP ↔ Alina.Bridge ↔ Ollama`
+The current `0.1.0` playable MVP passed:
 
-- В обычной локальной игре нет headless-сервера и RCON.
-- Multiplayer использует только синхронизированный deterministic-путь Factorio; приватный UDP не изменяет состояние клиентов.
-- World Model, pathing, исполнение, конфликты, строительство и контроль результата реализованы Lua-кодом.
-- Qwen используется только для разрешённых высокоуровневых решений и не управляет каждым действием.
+- clean .NET build with no warnings;
+- contract tests: **15/15**;
+- full physical E2E;
+- multiplayer host + 2 clients, disconnect/rejoin, no desync report;
+- fluid-production E2E;
+- rail-safety E2E;
+- performance and megabase endurance checks;
+- real K2SO save-copy test where Alina autonomously built and verified a useful 4-machine production block;
+- save-copy integrity check with unchanged SHA-256 after the test;
+- project quality gate.
 
-## Возможности playable MVP
+Detailed evidence and current limits: [`docs/CURRENT_STATUS.md`](docs/CURRENT_STATUS.md).
 
-- физическая добыча, крафт и получение материалов из существующих хранилищ/машин;
-- планируемый запас инвентаря, броня, оружие, оборудование, топливо и собственный паукотрон;
-- буры, печи, сборщики, ленты, манипуляторы, столбы, сундуки, рецепты, модули и robot logistics;
-- связанные item-based производственные блоки и длинные ленты от метки к базе;
-- многожидкостные производственные блоки с изоляцией fluidbox-портов, ёмкостями, prototype-aware насосами и параллельными линиями по требуемому расходу;
-- анализ минутной/длительной статистики, 15% запаса мощности и разделение bottleneck-ов на upstream, мощность и заблокированную логистику;
-- приоритет игрока, защищённые зоны и явные запреты;
-- исследования с ручным приоритетом игрока, бессрочными и игровыми временными паузами;
-- mod-aware выбор по активным runtime recipes/prototypes/technologies;
-- транзакционная стройка, проверяемый in-place upgrade и откат при ухудшении;
-- безопасное пересечение рельсов пешком и в собственном паукотроне без включения отложенного управления поездами;
-- редкие короткие советы игроку по фабрике без LLM и дополнительных сканирований.
+## Quick start
 
-В настройках мода можно изменить имя и обращения к Алине, включить/выключить автономию, выбрать компактную/обычную/отладочную подробность панели и частоту редкой похвалы. По умолчанию панель компактная, VSync и графические настройки Factorio мод не изменяет.
+1. Close Factorio.
+2. Put the packaged mod in your Factorio `mods` folder, or use the repository launcher for development/testing.
+3. Start a **copy** of the save you want to use first.
+4. In game, address Alina in Russian, for example:
 
-## Проверка
+```text
+Аля, продолжай развивать базу
+```
+
+For the repository workflow on Windows:
+
+```text
+START_ALINA_PLAYABLE.cmd
+```
+
+To rebuild a safe playable copy from the latest save:
+
+```text
+RESET_ALINA_PLAYABLE_FROM_LATEST_SAVE.cmd
+```
+
+## Architecture
+
+```text
+Factorio 2.1 / Space Age
+        │
+        ├── deterministic Lua runtime
+        │     ├── World Model
+        │     ├── planner / autonomy
+        │     ├── movement / construction
+        │     ├── player-conflict policy
+        │     └── verification / rollback
+        │
+        └── optional local bridge for bounded high-level requests
+```
+
+The mod does not use screenshots to understand the factory. Low-level gameplay remains deterministic and bounded; optional high-level assistance is outside the per-tick gameplay loop.
+
+## Tested scope
+
+The current release is aimed at real existing factories, including large mod-aware saves. It has been exercised against Factorio 2.1.12 + Space Age and K2/K2SO-style runtime prototypes.
+
+## Current limitations
+
+Not included in `0.1.0`:
+
+- full train-network design/control;
+- interplanetary logistics and planet progression;
+- large-scale combat strategy;
+- guaranteed full autonomous victory for arbitrary modpacks;
+- arbitrary-depth late-game fluid-chain solving;
+- general megabase optimization.
+
+## Repository map
+
+- `factorio-mod/alina-ai-teammate_0.1.0/` — Factorio mod source;
+- `bridge/` — optional local bridge;
+- `scripts/` — packaging, validation and release-gate scripts;
+- `tests/fixtures/` — deterministic test fixtures;
+- `docs/ARCHITECTURE.md` — architecture;
+- `docs/CURRENT_STATUS.md` — verified current state;
+- `docs/ALINA_MVP_CAPABILITIES_RU.md` — full Russian capability description;
+- `docs/MOD_PORTAL.md` — Mod Portal release text/checklist.
+
+## Validation
 
 ```powershell
 scripts\Test-Project.ps1
@@ -50,4 +116,12 @@ scripts\Run-QualityGate.ps1
 scripts\Package-Mod.ps1
 ```
 
-Актуальные доказательства и ограничения: [docs/CURRENT_STATUS.md](docs/CURRENT_STATUS.md). Архитектура: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Производительность: [docs/PERFORMANCE.md](docs/PERFORMANCE.md). Черновик публичной страницы и checklist выпуска: [docs/MOD_PORTAL.md](docs/MOD_PORTAL.md).
+## License
+
+Copyright © 2026 KORTYDEV. All rights reserved.
+
+The source is public for inspection, security review and evaluation. Reuse, modification, redistribution, relicensing or derivative works require prior written permission. See [`LICENSE`](LICENSE).
+
+---
+
+**Alina AI Teammate for Factorio — by Korty**
