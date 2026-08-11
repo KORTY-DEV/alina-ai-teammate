@@ -1,0 +1,62 @@
+name: Feature request
+description: Suggest a capability or improvement for Alina AI Teammate
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Good feature requests describe the gameplay problem first, then the desired behavior.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Gameplay problem
+      description: What limitation or friction are you trying to solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Desired Alina behavior
+      description: Describe what Alina should notice, decide and do in game.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Factory planning
+        - Logistics
+        - Fluids
+        - Power
+        - Research
+        - Trains
+        - Planets / Space Age
+        - Combat / defense
+        - Multiplayer
+        - Mod compatibility
+        - UI / commands
+        - Performance
+        - Installation / tooling
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: example
+    attributes:
+      label: Example situation
+      description: Give a concrete Factorio scenario where this would be useful.
+
+  - type: checkboxes
+    id: invariants
+    attributes:
+      label: Project principles
+      options:
+        - label: This can preserve player intent as the highest priority.
+          required: true
+        - label: This does not require Alina to silently destroy or rewrite existing player infrastructure.
+          required: true

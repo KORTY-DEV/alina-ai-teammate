@@ -1,0 +1,81 @@
+name: Bug report
+description: Report a reproducible problem with Alina AI Teammate
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve Alina. Please use a copy of any important save and remove private data before attaching files.
+
+  - type: input
+    id: factorio
+    attributes:
+      label: Factorio version
+      placeholder: "2.1.x"
+    validations:
+      required: true
+
+  - type: input
+    id: alina
+    attributes:
+      label: Alina version / commit
+      placeholder: "0.1.0 or commit SHA"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Launch mode
+      options:
+        - Full local mode — existing save
+        - Full local mode — new game
+        - Mod-only mode
+        - Multiplayer
+        - Test / development workflow
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: mods
+    attributes:
+      label: Relevant mods
+      description: List Space Age / K2 / K2SO / Cerys / Moshine or other mods that may matter.
+      placeholder: "Space Age, Krastorio 2, ..."
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the actual behavior and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Start ...
+        2. Load ...
+        3. Ask Alina to ...
+        4. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs / screenshots / safe save copy
+      description: Do not post passwords, tokens, private server details or an original irreplaceable save. See SECURITY.md.
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I reproduced this on a copy / non-critical save when a save was involved.
+          required: true
+        - label: I removed credentials and private data from anything attached.
+          required: true
